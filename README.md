@@ -1,6 +1,6 @@
 ﻿# Retail Shelf Audit MVP
 
-This project is a demo-ready shelf audit app for hackathons and store-ops prototypes.
+This project is a demo-ready shelf audit app.
 
 ## What it does
 
@@ -9,7 +9,7 @@ This project is a demo-ready shelf audit app for hackathons and store-ops protot
 - Identifies as many visible products as the model can infer from the image
 - Flags low stock, empty space, messy fronting, mixed products, label gaps, and audit-worthy issues
 - Generates restock, rearrange, or audit tasks automatically from the model response
-- Returns a voice-ready instruction summary
+
 
 ## Run locally
 
