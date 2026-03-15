@@ -1,0 +1,74 @@
+﻿{
+  "Tesco Diet Lemonade": {
+    "expected_units": 6,
+    "expected_facings": 3,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "upper-middle shelf"
+  },
+  "Schweppes Slimline Lemonade": {
+    "expected_units": 7,
+    "expected_facings": 4,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "upper-middle shelf"
+  },
+  "Robinsons Fruit Creations Lime Cordial": {
+    "expected_units": 4,
+    "expected_facings": 3,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "upper-middle shelf"
+  },
+  "Bottlegreen Elderflower Cordial": {
+    "expected_units": 2,
+    "expected_facings": 1,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "upper-middle shelf"
+  },
+  "Robinsons Orange Squash": {
+    "expected_units": 6,
+    "expected_facings": 4,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "middle shelf"
+  },
+  "Robinsons Fruit & Barley": {
+    "expected_units": 4,
+    "expected_facings": 2,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "middle shelf"
+  },
+  "Vimto No Added Sugar": {
+    "expected_units": 4,
+    "expected_facings": 2,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "middle shelf"
+  },
+  "Ribena Blackcurrant": {
+    "expected_units": 3,
+    "expected_facings": 1,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "middle shelf"
+  },
+  "Tesco Lime Juice": {
+    "expected_units": 6,
+    "expected_facings": 3,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "juice shelf"
+  },
+  "Ocean Spray Cranberry": {
+    "expected_units": 4,
+    "expected_facings": 2,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "juice shelf"
+  },
+  "Capri-Sun Zero Orange": {
+    "expected_units": 6,
+    "expected_facings": 3,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "bottom shelf"
+  },
+  "Fruit Shoot Apple & Blackcurrant": {
+    "expected_units": 8,
+    "expected_facings": 4,
+    "location": "Aisle 2 - Drinks Bay",
+    "shelf_level": "bottom shelf"
+  }
+}
