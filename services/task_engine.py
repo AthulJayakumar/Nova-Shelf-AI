@@ -18,6 +18,10 @@ def create_task(
     location: str,
     shelf_level: str,
     reason: str,
+    assignee_id: str | None = None,
+    assignee_name: str | None = None,
+    assignee_role: str | None = None,
+    assignment_reason: str | None = None,
 ) -> TaskRecord:
     task = TaskRecord(
         id=next(_task_ids),
@@ -28,6 +32,10 @@ def create_task(
         location=location,
         shelf_level=shelf_level,
         reason=reason,
+        assignee_id=assignee_id,
+        assignee_name=assignee_name,
+        assignee_role=assignee_role,
+        assignment_reason=assignment_reason,
     )
     tasks.append(task)
     return task

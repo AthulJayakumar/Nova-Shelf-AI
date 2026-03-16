@@ -3,6 +3,7 @@
 from database.models import ShelfIssue, TaskRecord
 from services.inventory_service import check_backstock
 from services.planogram_service import resolve_location
+from services.rota_service import assign_employee
 from services.task_engine import create_task
 
 
@@ -17,6 +18,13 @@ def build_tasks(issues: list[ShelfIssue], audit_location: str) -> list[TaskRecor
     for issue in issues:
         location, shelf_level = resolve_location(issue.product_name, audit_location, issue.shelf_level)
         action = issue.suggested_action
+        assignee, assignment_reason = assign_employee(action, location)
+        assignment_payload = {
+            "assignee_id": assignee.employee_id if assignee else None,
+            "assignee_name": assignee.name if assignee else None,
+            "assignee_role": assignee.role if assignee else None,
+            "assignment_reason": assignment_reason,
+        }
 
         if action in RESTOCK_ACTIONS and issue.product_name:
             backstock = check_backstock(issue.product_name)
@@ -32,6 +40,7 @@ def build_tasks(issues: list[ShelfIssue], audit_location: str) -> list[TaskRecor
                         location=location,
                         shelf_level=shelf_level,
                         reason=issue.details,
+                        **assignment_payload,
                     )
                 )
             else:
@@ -44,6 +53,7 @@ def build_tasks(issues: list[ShelfIssue], audit_location: str) -> list[TaskRecor
                         location=location,
                         shelf_level=shelf_level,
                         reason=f"Backstock not found in inventory. {issue.details}",
+                        **assignment_payload,
                     )
                 )
             continue
@@ -58,6 +68,7 @@ def build_tasks(issues: list[ShelfIssue], audit_location: str) -> list[TaskRecor
                     location=location,
                     shelf_level=shelf_level,
                     reason=issue.details,
+                    **assignment_payload,
                 )
             )
             continue
@@ -72,6 +83,7 @@ def build_tasks(issues: list[ShelfIssue], audit_location: str) -> list[TaskRecor
                     location=location,
                     shelf_level=shelf_level,
                     reason=issue.details,
+                    **assignment_payload,
                 )
             )
 

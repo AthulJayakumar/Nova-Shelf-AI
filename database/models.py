@@ -53,6 +53,21 @@ class VisionShelfAudit(BaseModel):
     issues: list[ShelfIssue] = Field(default_factory=list)
 
 
+class EmployeeShift(BaseModel):
+    day: Literal["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    start: str
+    end: str
+
+
+class EmployeeRecord(BaseModel):
+    employee_id: str
+    name: str
+    role: str
+    skills: list[Literal["RESTOCK", "REARRANGE", "AUDIT", "ALL"]] = Field(default_factory=list)
+    zones: list[str] = Field(default_factory=list)
+    shifts: list[EmployeeShift] = Field(default_factory=list)
+
+
 class TaskRecord(BaseModel):
     id: int
     task_type: Literal["RESTOCK", "REARRANGE", "AUDIT"]
@@ -62,6 +77,10 @@ class TaskRecord(BaseModel):
     location: str
     shelf_level: str
     reason: str
+    assignee_id: str | None = None
+    assignee_name: str | None = None
+    assignee_role: str | None = None
+    assignment_reason: str | None = None
     status: Literal["PENDING", "COMPLETED"] = "PENDING"
 
 

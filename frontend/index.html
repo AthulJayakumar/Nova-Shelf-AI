@@ -1,92 +1,215 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Retail Shelf Audit Demo</title>
+  <title>Nova Shelf AI</title>
   <style>
     :root {
-      --ink: #12221f;
-      --muted: rgba(18, 34, 31, 0.68);
-      --cream: #f3ecdf;
-      --sand: #e8dcc4;
-      --rust: #c05d33;
-      --leaf: #366e55;
-      --gold: #e1b24b;
-      --panel: rgba(255, 251, 244, 0.88);
-      --border: rgba(18, 34, 31, 0.08);
-      --shadow: 0 24px 70px rgba(18, 34, 31, 0.14);
-      --radius: 26px;
+      --ink: #10201e;
+      --forest: #173d35;
+      --pine: #23584c;
+      --mint: #79c7a4;
+      --clay: #c85b35;
+      --amber: #e4b254;
+      --paper: #f6efe3;
+      --cream: #fbf7f1;
+      --fog: rgba(255, 255, 255, 0.7);
+      --line: rgba(16, 32, 30, 0.12);
+      --shadow: 0 24px 60px rgba(16, 32, 30, 0.16);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(192, 93, 51, 0.24), transparent 28%),
-        radial-gradient(circle at top right, rgba(54, 110, 85, 0.2), transparent 32%),
-        linear-gradient(180deg, #f7f0e6 0%, #eee2cf 100%);
       min-height: 100vh;
+      color: var(--ink);
+      font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(121, 199, 164, 0.25), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(200, 91, 53, 0.22), transparent 28%),
+        linear-gradient(135deg, #f8f1e6 0%, #efe3d1 42%, #e6dbc8 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(16, 32, 30, 0.02) 1px, transparent 1px),
+        linear-gradient(rgba(16, 32, 30, 0.02) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.4), transparent 80%);
     }
 
     main {
-      max-width: 1240px;
+      max-width: 1380px;
       margin: 0 auto;
-      padding: 36px 18px 64px;
+      padding: 28px 18px 72px;
       display: grid;
       gap: 22px;
-    }
-
-    .hero,
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      backdrop-filter: blur(14px);
+      position: relative;
+      z-index: 1;
     }
 
     .hero {
-      padding: 30px;
       display: grid;
-      gap: 14px;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel,
+    .sidebar-card,
+    .chart-card,
+    .stat-card,
+    .info-card {
+      background: linear-gradient(180deg, rgba(255, 251, 245, 0.92), rgba(255, 250, 243, 0.82));
+      border: 1px solid rgba(16, 32, 30, 0.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-card {
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(121, 199, 164, 0.28), transparent 68%);
     }
 
     .eyebrow {
-      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--leaf);
+      letter-spacing: 0.18em;
+      color: var(--pine);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.55;
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(2.4rem, 5.5vw, 4.8rem);
-      line-height: 0.94;
+      margin: 18px 0 12px;
+      max-width: 10ch;
+      font-size: clamp(2.8rem, 6vw, 5.4rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
     }
 
-    .hero p {
+    .hero-copy {
+      max-width: 64ch;
       margin: 0;
-      max-width: 65ch;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 1.02rem;
+      color: rgba(16, 32, 30, 0.74);
+      font-size: 1rem;
+      line-height: 1.75;
     }
 
-    .layout {
+    .hero-strip {
+      margin-top: 22px;
       display: grid;
-      grid-template-columns: 420px 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-card {
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .info-card strong {
+      display: block;
+      font-size: 1.25rem;
+      margin-top: 6px;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-side .sidebar-card {
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+      background:
+        radial-gradient(circle at top right, rgba(121, 199, 164, 0.18), transparent 30%),
+        linear-gradient(180deg, rgba(23, 61, 53, 0.96), rgba(16, 32, 30, 0.94));
+      color: #f5f0e8;
+    }
+
+    .hero-side .sidebar-card .eyebrow {
+      color: rgba(245, 240, 232, 0.82);
+    }
+
+    .hero-side .sidebar-card p,
+    .hero-side .sidebar-card li {
+      color: rgba(245, 240, 232, 0.76);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .mini-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 390px 1fr;
       gap: 22px;
       align-items: start;
     }
 
     .panel {
+      border-radius: var(--radius-xl);
       padding: 22px;
+    }
+
+    .sidebar {
+      display: grid;
+      gap: 18px;
+      position: sticky;
+      top: 18px;
+    }
+
+    .sidebar-card {
+      border-radius: var(--radius-xl);
+      padding: 20px;
     }
 
     form {
@@ -97,64 +220,90 @@
     label {
       display: grid;
       gap: 8px;
-      font-size: 0.92rem;
-      color: var(--muted);
+      color: rgba(16, 32, 30, 0.7);
+      font-size: 0.9rem;
     }
 
     input,
     select,
-    button,
-    textarea {
+    button {
+      width: 100%;
+      border: 1px solid rgba(16, 32, 30, 0.14);
+      border-radius: 16px;
+      padding: 14px 15px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
       font: inherit;
-      border-radius: 15px;
-      border: 1px solid rgba(18, 34, 31, 0.12);
-      padding: 12px 14px;
-      background: rgba(255, 255, 255, 0.86);
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid rgba(121, 199, 164, 0.45);
+      border-color: rgba(35, 88, 76, 0.24);
     }
 
     button {
       border: none;
+      background: linear-gradient(135deg, var(--clay), #d77a43 52%, #f0b158 100%);
       color: white;
       font-weight: 700;
-      background: linear-gradient(135deg, var(--rust), #d77448);
-      box-shadow: 0 12px 24px rgba(192, 93, 51, 0.24);
+      letter-spacing: 0.02em;
+      box-shadow: 0 16px 28px rgba(200, 91, 53, 0.28);
       cursor: pointer;
-      transition: transform 140ms ease;
+      transition: transform 140ms ease, box-shadow 140ms ease;
     }
 
     button:hover {
       transform: translateY(-1px);
+      box-shadow: 0 20px 34px rgba(200, 91, 53, 0.32);
+    }
+
+    button:disabled {
+      background: linear-gradient(135deg, rgba(200, 91, 53, 0.72), rgba(215, 122, 67, 0.72));
+      transform: none;
     }
 
     .subtle {
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.5;
+      color: rgba(16, 32, 30, 0.66);
+      font-size: 0.9rem;
+      line-height: 1.6;
     }
 
-    .preview {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      border-radius: 22px;
-      background: linear-gradient(160deg, rgba(54, 110, 85, 0.12), rgba(192, 93, 51, 0.1));
+    .preview-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(23, 61, 53, 0.12), rgba(121, 199, 164, 0.16)),
+        linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+      border: 1px solid rgba(16, 32, 30, 0.1);
+      min-height: 440px;
       display: grid;
       place-items: center;
-      overflow: hidden;
-      border: 1px dashed rgba(18, 34, 31, 0.16);
     }
 
-    .preview img {
+    .preview-shell::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 18px;
+      border: 1px dashed rgba(16, 32, 30, 0.18);
+      pointer-events: none;
+    }
+
+    .preview-shell img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: none;
     }
 
-    .placeholder {
-      padding: 18px;
+    .preview-placeholder {
+      max-width: 26ch;
       text-align: center;
-      color: var(--muted);
-      line-height: 1.5;
+      color: rgba(16, 32, 30, 0.6);
+      padding: 24px;
+      z-index: 1;
     }
 
     .results {
@@ -162,29 +311,187 @@
       gap: 18px;
     }
 
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid var(--border);
-    }
-
-    .metric strong {
-      display: block;
-      font-size: 1.7rem;
-      line-height: 1;
-      margin-top: 6px;
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
     }
 
     .section-title {
-      margin: 0 0 10px;
-      font-size: 1.18rem;
+      margin: 4px 0 0;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+
+    .provider-pill,
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .provider-pill {
+      background: rgba(35, 88, 76, 0.1);
+      color: var(--pine);
+      border: 1px solid rgba(35, 88, 76, 0.16);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(121, 199, 164, 0.18), transparent 72%);
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.85rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .chart-card {
+      border-radius: 22px;
+      padding: 18px;
+      min-height: 240px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .chart-card h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .chart-stack {
+      display: grid;
+      gap: 12px;
+      min-height: 155px;
+      align-content: start;
+    }
+
+    .chart-empty {
+      min-height: 155px;
+      border-radius: 18px;
+      background: rgba(16, 32, 30, 0.04);
+      border: 1px dashed rgba(16, 32, 30, 0.14);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 18px;
+      color: rgba(16, 32, 30, 0.55);
+    }
+
+    .chart-row {
+      display: grid;
+      gap: 6px;
+    }
+
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.84rem;
+      color: rgba(16, 32, 30, 0.72);
+    }
+
+    .chart-track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(16, 32, 30, 0.08);
+      overflow: hidden;
+    }
+
+    .chart-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #4b8c74, var(--mint));
+    }
+
+    .chart-fill.issue { background: linear-gradient(135deg, #b1472f, #ec8e59); }
+    .chart-fill.task { background: linear-gradient(135deg, #af7a16, #f0c364); }
+    .chart-fill.hotspot { background: linear-gradient(135deg, var(--forest), #2f7362); }
+    fieldset { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: 14px; }
+    button:disabled, fieldset:disabled input, fieldset:disabled select {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    #run-status.busy { color: var(--clay); }
+    .form-shell.busy {
+      opacity: 0.95;
+    }
+
+    .gauge-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 155px;
+    }
+
+    .gauge {
+      width: 160px;
+      height: 160px;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    .gauge svg {
+      width: 160px;
+      height: 160px;
+      transform: rotate(-90deg);
+    }
+
+    .gauge-value {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .gauge-value strong {
+      font-size: 2rem;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
     }
 
     .cards {
@@ -193,167 +500,295 @@
     }
 
     .card {
-      padding: 15px 16px;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.82);
-      border: 1px solid var(--border);
+      padding: 15px 16px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(16, 32, 30, 0.08);
+    }
+
+    .problem-card {
+      border-left: 4px solid rgba(200, 91, 53, 0.72);
+      background:
+        linear-gradient(180deg, rgba(255, 247, 243, 0.94), rgba(255, 255, 255, 0.82));
+    }
+
+    .task-card {
+      border-left: 4px solid rgba(228, 178, 84, 0.82);
+      background:
+        linear-gradient(180deg, rgba(255, 251, 239, 0.94), rgba(255, 255, 255, 0.82));
+    }
+
+    .debug-shell {
+      border-radius: 20px;
+      border: 1px solid rgba(16, 32, 30, 0.08);
+      background: rgba(255, 255, 255, 0.56);
+      overflow: hidden;
+    }
+
+    .debug-shell summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 14px 16px;
+      font-weight: 700;
+    }
+
+    .debug-shell summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .debug-shell summary::after {
+      content: "View";
+      float: right;
+      color: var(--pine);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .debug-shell[open] summary::after {
+      content: "Hide";
+    }
+
+    .debug-shell .card {
+      border: none;
+      border-top: 1px solid rgba(16, 32, 30, 0.08);
+      border-radius: 0;
+      background: transparent;
     }
 
     .row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
     }
 
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 7px 11px;
-      font-size: 0.8rem;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      background: rgba(54, 110, 85, 0.12);
-      color: var(--leaf);
+      background: rgba(35, 88, 76, 0.1);
+      color: var(--pine);
+      border: 1px solid rgba(35, 88, 76, 0.12);
     }
 
     .pill.high,
     .pill.restock {
-      background: rgba(192, 93, 51, 0.12);
-      color: var(--rust);
+      background: rgba(200, 91, 53, 0.12);
+      color: var(--clay);
+      border-color: rgba(200, 91, 53, 0.14);
     }
 
     .pill.medium,
     .pill.rearrange {
-      background: rgba(225, 178, 75, 0.18);
-      color: #8d6510;
+      background: rgba(228, 178, 84, 0.18);
+      color: #8f6513;
+      border-color: rgba(228, 178, 84, 0.2);
     }
 
     .pill.audit,
     .pill.low {
-      background: rgba(18, 34, 31, 0.08);
+      background: rgba(16, 32, 30, 0.06);
       color: var(--ink);
     }
 
     .mono {
       font-family: "Cascadia Code", Consolas, monospace;
-      font-size: 0.88rem;
-      color: #173730;
+      font-size: 0.87rem;
+      line-height: 1.65;
       white-space: pre-wrap;
       word-break: break-word;
+      color: #173730;
     }
 
     .error {
       display: none;
       padding: 14px 16px;
       border-radius: 18px;
-      background: rgba(192, 93, 51, 0.1);
-      border: 1px solid rgba(192, 93, 51, 0.18);
-      color: #8e3f1b;
+      background: rgba(200, 91, 53, 0.1);
+      border: 1px solid rgba(200, 91, 53, 0.18);
+      color: #8d3e22;
+      margin-bottom: 12px;
     }
 
-    .grid-two {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
+    .sub-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.52));
     }
 
-    @media (max-width: 980px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: 1fr; }
+      .dashboard { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
+    @media (max-width: 720px) {
+      main { padding: 20px 14px 56px; }
+      .hero-card,
+      .panel,
+      .sidebar-card { padding: 20px; }
+      .hero-strip { grid-template-columns: 1fr; }
+      h1 { max-width: 12ch; }
+      .preview-shell { min-height: 320px; }
     }
   </style>
 </head>
 <body>
   <main>
     <section class="hero">
-      <div class="eyebrow">Any-Aisle Shelf Audit</div>
-      <h1>Upload any shelf image and turn it into store tasks.</h1>
-      <p>
-        This demo accepts aisle photos from drinks, grocery, household, or personal-care sections. When Bedrock is enabled,
-        Nova can identify visible products across the bay, flag shelf issues, and produce restock or rearrangement tasks automatically.
-      </p>
-    </section>
-
-    <section class="layout">
-      <article class="panel">
-        <form id="scan-form">
-          <label>
-            Shelf image
-            <input id="file-input" type="file" name="file" accept="image/*" required />
-          </label>
-
-          <label>
-            Location hint
-            <input type="text" name="location_hint" value="Unknown aisle" />
-          </label>
-
-          <label>
-            Analysis mode
-            <select name="analysis_mode">
-              <option value="auto">Auto (use Bedrock if enabled, else generic fallback)</option>
-              <option value="demo">Generic fallback only</option>
-              <option value="bedrock">Bedrock only</option>
-            </select>
-          </label>
-
-          <button type="submit">Run shelf audit</button>
-          <div class="subtle">
-            Use <code>bedrock</code> when you want real any-aisle product recognition. The generic fallback keeps the workflow demoable even offline.
+      <article class="hero-card">
+        <div class="eyebrow">Retail Operations Intelligence</div>
+        <h1>Turn shelf scans into a clear fix list.</h1>
+        <p class="hero-copy">
+          This dashboard is tuned for store action instead of model exhaust. It surfaces the problems, the impacted areas,
+          and the exact task plan needed to recover the bay.
+        </p>
+        <div class="hero-strip">
+          <div class="info-card">
+            <div class="subtle">Output style</div>
+            <strong>Problem-first</strong>
           </div>
-        </form>
-
-        <div class="preview" style="margin-top: 18px;">
-          <img id="preview-image" alt="Shelf preview" />
-          <div class="placeholder" id="preview-placeholder">
-            Your uploaded shelf photo will appear here before analysis.
+          <div class="info-card">
+            <div class="subtle">Task focus</div>
+            <strong>Restock + tidy</strong>
+          </div>
+          <div class="info-card">
+            <div class="subtle">Visual mode</div>
+            <strong>Judge-friendly</strong>
           </div>
         </div>
       </article>
 
+      <div class="hero-side">
+        <section class="sidebar-card">
+          <div class="eyebrow">Demo Flow</div>
+          <ul class="mini-list">
+            <li><span>1. Upload shelf image</span><span>Photo</span></li>
+            <li><span>2. Analyze shelf state</span><span>Vision</span></li>
+            <li><span>3. Create tasks</span><span>Action</span></li>
+            <li><span>4. Assign staff</span><span>Rota</span></li>
+          </ul>
+        </section>
+        <section class="sidebar-card">
+          <div class="eyebrow">Hackathon Angle</div>
+          <p>The dashboard below is tuned to tell the story fast: what the model saw, what needs work, and where staff should go next.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <aside class="sidebar">
+        <section class="sidebar-card">
+          <div class="eyebrow">Run Audit</div>
+          <form id="scan-form" class="form-shell">
+            <fieldset id="scan-fields">
+            <label>
+              Shelf image
+              <input id="file-input" type="file" name="file" accept="image/*" required />
+            </label>
+
+            <label>
+              Location hint
+              <input type="text" name="location_hint" value="Unknown aisle" />
+            </label>
+
+            <label>
+              Analysis mode
+              <select name="analysis_mode">
+                <option value="auto">Auto (Bedrock when available)</option>
+                <option value="demo">Demo fallback only</option>
+                <option value="bedrock">Bedrock only</option>
+              </select>
+            </label>
+
+            <button id="submit-button" type="submit">Run shelf audit</button>
+            </fieldset>
+            <div id="run-status" class="subtle">Ready to analyze.</div>
+            <div class="subtle">Use <code>bedrock</code> for real shelf recognition. While analysis is running, controls are temporarily disabled.</div>
+          </form>
+        </section>
+
+        <section class="sidebar-card">
+          <div class="eyebrow">Preview</div>
+          <div class="preview-shell">
+            <img id="preview-image" alt="Shelf preview" />
+            <div id="preview-placeholder" class="preview-placeholder">
+              Your uploaded photo appears here. The dashboard on the right will fill with charts and actionable findings after each scan.
+            </div>
+          </div>
+        </section>
+      </aside>
+
       <article class="results">
         <section class="panel">
-          <div class="row">
+          <div class="section-head">
             <div>
-              <div class="eyebrow">Live result</div>
-              <h2 class="section-title" style="margin-top: 4px;">Shelf summary</h2>
+              <div class="eyebrow">Live Result</div>
+              <h2 class="section-title">Shelf summary</h2>
             </div>
-            <span class="pill" id="provider-pill">Waiting for scan</span>
+            <span class="provider-pill" id="provider-pill">Waiting for scan</span>
           </div>
           <div id="error-box" class="error"></div>
           <p id="overview" class="subtle">Upload an image to generate a shelf audit.</p>
-          <div class="metrics" id="metrics"></div>
-        </section>
-
-        <section class="grid-two">
-          <div class="panel">
-            <h3 class="section-title">Detected Products</h3>
-            <div class="cards" id="products-list"></div>
-          </div>
-          <div class="panel">
-            <h3 class="section-title">Shelf Issues</h3>
-            <div class="cards" id="issues-list"></div>
-          </div>
-        </section>
-
-        <section class="grid-two">
-          <div class="panel">
-            <h3 class="section-title">Generated Tasks</h3>
-            <div class="cards" id="tasks-list"></div>
-          </div>
-          <div class="panel">
-            <h3 class="section-title">Voice / Text Instruction</h3>
-            <div class="card mono" id="instruction-box">No instruction yet.</div>
-          </div>
+          <div id="metrics" class="metrics"></div>
         </section>
 
         <section class="panel">
-          <h3 class="section-title">Raw JSON</h3>
-          <div class="card mono" id="raw-json">Awaiting response...</div>
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Analysis Charts</div>
+              <h2 class="section-title">Problem board</h2>
+            </div>
+          </div>
+          <div class="chart-grid">
+            <div class="chart-card">
+              <h4>Audit confidence</h4>
+              <div id="confidence-gauge" class="gauge-wrap"></div>
+            </div>
+            <div class="chart-card">
+              <h4>Impacted products</h4>
+              <div id="product-chart" class="chart-stack"></div>
+            </div>
+            <div class="chart-card">
+              <h4>Issue types</h4>
+              <div id="issue-chart" class="chart-stack"></div>
+            </div>
+            <div class="chart-card">
+              <h4>Task types</h4>
+              <div id="task-chart" class="chart-stack"></div>
+            </div>
+            <div class="chart-card" style="grid-column: span 2;">
+              <h4>Shelf hotspots</h4>
+              <div id="hotspot-chart" class="chart-stack"></div>
+            </div>
+            <div class="chart-card" style="grid-column: span 2;">
+              <h4>Gap load by issue</h4>
+              <div id="gap-chart" class="chart-stack"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cards-grid">
+          <div class="panel sub-panel">
+            <h3 class="section-title">Problems To Rectify</h3>
+            <div id="issues-list" class="cards"></div>
+          </div>
+          <div class="panel sub-panel">
+            <h3 class="section-title">Generated Tasks</h3>
+            <div id="tasks-list" class="cards"></div>
+          </div>
+        </section>
+
+        <section class="cards-grid">
+          <div class="panel sub-panel">
+            <h3 class="section-title">Instruction</h3>
+            <div id="instruction-box" class="card mono">No instruction yet.</div>
+          </div>
+        </section>
+
+        <section class="panel sub-panel">
+          <details class="debug-shell">
+            <summary>Debug Output</summary>
+            <div id="raw-json" class="card mono">Awaiting response...</div>
+          </details>
         </section>
       </article>
     </section>
@@ -361,6 +796,9 @@
 
   <script>
     const form = document.getElementById("scan-form");
+    const scanFields = document.getElementById("scan-fields");
+    const submitButton = document.getElementById("submit-button");
+    const runStatus = document.getElementById("run-status");
     const fileInput = document.getElementById("file-input");
     const previewImage = document.getElementById("preview-image");
     const previewPlaceholder = document.getElementById("preview-placeholder");
@@ -373,8 +811,24 @@
     const instructionBox = document.getElementById("instruction-box");
     const rawJson = document.getElementById("raw-json");
     const errorBox = document.getElementById("error-box");
+    const confidenceGauge = document.getElementById("confidence-gauge");
+    const productChart = document.getElementById("product-chart");
+    const issueChart = document.getElementById("issue-chart");
+    const taskChart = document.getElementById("task-chart");
+    const hotspotChart = document.getElementById("hotspot-chart");
+    const gapChart = document.getElementById("gap-chart");
 
     const emptyState = (message) => `<div class="card subtle">${message}</div>`;
+    const emptyChartState = (message) => `<div class="chart-empty">${message}</div>`;
+
+    function setBusyState(isBusy) {
+      scanFields.disabled = isBusy;
+      submitButton.disabled = isBusy;
+      submitButton.textContent = isBusy ? "Analyzing shelf..." : "Run shelf audit";
+      runStatus.textContent = isBusy ? "Analysis in progress. Controls are temporarily offline." : "Ready to analyze.";
+      runStatus.classList.toggle("busy", isBusy);
+      form.classList.toggle("busy", isBusy);
+    }
 
     fileInput.addEventListener("change", () => {
       const [file] = fileInput.files;
@@ -394,51 +848,70 @@
     });
 
     function renderMetrics(summary, confidence, location) {
+      const totalTasks = (summary.restock_task_count || 0) + (summary.rearrange_task_count || 0) + (summary.audit_task_count || 0);
+      const issueCount = summary.issue_count || 0;
+      const actionState = issueCount > 0 ? "Action needed" : "Shelf stable";
       metrics.innerHTML = `
-        <div class="metric"><div class="subtle">Confidence</div><strong>${Math.round((confidence || 0) * 100)}%</strong></div>
-        <div class="metric"><div class="subtle">Products</div><strong>${summary.detected_product_count}</strong></div>
-        <div class="metric"><div class="subtle">Issues</div><strong>${summary.issue_count}</strong></div>
-        <div class="metric"><div class="subtle">Restock tasks</div><strong>${summary.restock_task_count}</strong></div>
-        <div class="metric"><div class="subtle">Rearrange tasks</div><strong>${summary.rearrange_task_count}</strong></div>
-        <div class="metric"><div class="subtle">Location</div><strong style="font-size: 1.1rem; line-height: 1.2;">${location}</strong></div>
+        <div class="stat-card"><div class="subtle">Confidence</div><strong>${Math.round((confidence || 0) * 100)}%</strong></div>
+        <div class="stat-card"><div class="subtle">Problems</div><strong>${issueCount}</strong></div>
+        <div class="stat-card"><div class="subtle">Restock</div><strong>${summary.restock_task_count}</strong></div>
+        <div class="stat-card"><div class="subtle">Rearrange</div><strong>${summary.rearrange_task_count}</strong></div>
+        <div class="stat-card"><div class="subtle">Active tasks</div><strong>${totalTasks}</strong></div>
+        <div class="stat-card"><div class="subtle">Status</div><strong style="font-size: 1.1rem; line-height: 1.2;">${actionState}</strong></div>
+        <div class="stat-card"><div class="subtle">Location</div><strong style="font-size: 1.05rem; line-height: 1.2;">${location}</strong></div>
       `;
     }
 
-    function renderProducts(products) {
-      if (!products.length) {
-        productsList.innerHTML = emptyState("No products returned.");
+    function renderProducts(products, issues) {
+      if (!productsList) {
         return;
       }
 
-      productsList.innerHTML = products.map((product) => `
+      const issueNames = new Set((issues || []).map((issue) => issue.product_name).filter(Boolean));
+      const impacted = (products || []).filter((product) => issueNames.has(product.product_name) || ((product.condition || "HEALTHY") !== "HEALTHY"));
+      if (!impacted.length) {
+        productsList.innerHTML = emptyState("No impacted product snapshot is needed for this scan.");
+        return;
+      }
+
+      productsList.innerHTML = impacted.map((product) => `
         <div class="card">
           <div class="row">
             <strong>${product.product_name}</strong>
-            <span class="pill">${product.condition.replaceAll("_", " ")}</span>
+            <span class="pill">${(product.condition || "UNKNOWN").replaceAll("_", " ")}</span>
           </div>
           <div class="subtle">${product.brand || "Unknown brand"}${product.category ? ` | ${product.category}` : ""}</div>
           <div class="subtle">${product.shelf_level}</div>
-          <div class="subtle">Units: ${product.estimated_units} | Facings: ${product.facings} | Confidence: ${Math.round(product.confidence * 100)}%</div>
-          <div class="subtle">${product.notes || "No additional notes."}</div>
+          <div class="subtle">Units: ${product.estimated_units} | Facings: ${product.facings} | Confidence: ${Math.round((product.confidence || 0) * 100)}%</div>
+          <div class="subtle">${product.notes || "This product appears here because its shelf zone needs attention."}</div>
         </div>
       `).join("");
     }
 
     function renderIssues(issues) {
       if (!issues.length) {
-        issuesList.innerHTML = emptyState("No shelf issues detected.");
+        issuesList.innerHTML = emptyState("No problems requiring rectification were detected.");
         return;
       }
 
-      issuesList.innerHTML = issues.map((issue) => `
-        <div class="card">
+      const severityRank = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+      const sortedIssues = [...issues].sort((left, right) => {
+        const bySeverity = (severityRank[right.severity] || 0) - (severityRank[left.severity] || 0);
+        if (bySeverity !== 0) {
+          return bySeverity;
+        }
+        return (right.gap_units || 0) - (left.gap_units || 0);
+      });
+
+      issuesList.innerHTML = sortedIssues.map((issue) => `
+        <div class="card problem-card">
           <div class="row">
-            <strong>${issue.issue_type.replaceAll("_", " ")}</strong>
-            <span class="pill ${issue.severity.toLowerCase()}">${issue.severity}</span>
+            <strong>${(issue.issue_type || "UNKNOWN").replaceAll("_", " ")}</strong>
+            <span class="pill ${(issue.severity || "LOW").toLowerCase()}">${issue.severity}</span>
           </div>
           <div class="subtle">${issue.product_name || "General shelf zone"} | ${issue.shelf_level}</div>
           <div class="subtle">${issue.details}</div>
-          <div class="subtle">Suggested action: ${issue.suggested_action} ${issue.gap_units ? `| Gap units: ${issue.gap_units}` : ""}</div>
+          <div class="subtle">Suggested action: ${issue.suggested_action}${issue.gap_units ? ` | Gap units: ${issue.gap_units}` : ""}</div>
         </div>
       `).join("");
     }
@@ -449,8 +922,17 @@
         return;
       }
 
-      tasksList.innerHTML = tasks.map((task) => `
-        <div class="card">
+      const priorityRank = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+      const sortedTasks = [...tasks].sort((left, right) => {
+        const byPriority = (priorityRank[right.priority] || 0) - (priorityRank[left.priority] || 0);
+        if (byPriority !== 0) {
+          return byPriority;
+        }
+        return (right.quantity || 0) - (left.quantity || 0);
+      });
+
+      tasksList.innerHTML = sortedTasks.map((task) => `
+        <div class="card task-card">
           <div class="row">
             <strong>${task.task_type}</strong>
             <span class="pill ${task.task_type.toLowerCase()}">${task.priority}</span>
@@ -458,30 +940,126 @@
           <div class="subtle">${task.product_name || "General bay task"}</div>
           <div class="subtle">${task.location} | ${task.shelf_level}</div>
           <div class="subtle">${task.quantity ? `Quantity: ${task.quantity} | ` : ""}${task.reason}</div>
+          <div class="subtle">Assigned to: ${task.assignee_name || "Unassigned"}${task.assignee_role ? ` (${task.assignee_role})` : ""}</div>
+          <div class="subtle">${task.assignment_reason || "No assignment reason available."}</div>
         </div>
       `).join("");
     }
 
+    function countBy(items, getKey) {
+      const counts = new Map();
+      items.forEach((item) => {
+        const key = getKey(item);
+        if (!key) return;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      });
+      return [...counts.entries()].map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+    }
+
+    function sumBy(items, getKey, getValue) {
+      const counts = new Map();
+      items.forEach((item) => {
+        const key = getKey(item);
+        if (!key) return;
+        counts.set(key, (counts.get(key) || 0) + (getValue(item) || 0));
+      });
+      return [...counts.entries()].map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+    }
+
+    function renderBarChart(container, rows, fillClass, emptyMessage) {
+      if (!rows.length) {
+        container.innerHTML = emptyChartState(emptyMessage);
+        return;
+      }
+
+      const maxValue = Math.max(...rows.map((row) => row.value), 1);
+      container.innerHTML = rows.map((row) => `
+        <div class="chart-row">
+          <div class="chart-meta">
+            <span>${row.label}</span>
+            <strong>${row.value}</strong>
+          </div>
+          <div class="chart-track">
+            <div class="chart-fill ${fillClass}" style="width: ${(row.value / maxValue) * 100}%"></div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderGaugeChart(container, label, percent) {
+      const safePercent = Math.max(0, Math.min(100, Math.round(percent || 0)));
+      const radius = 64;
+      const circumference = 2 * Math.PI * radius;
+      const offset = circumference - ((safePercent / 100) * circumference);
+      container.innerHTML = `
+        <div class="gauge">
+          <svg viewBox="0 0 160 160" aria-hidden="true">
+            <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(16, 32, 30, 0.08)" stroke-width="14"></circle>
+            <circle cx="80" cy="80" r="64" fill="none" stroke="url(#gaugeGradient)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"></circle>
+            <defs>
+              <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#c85b35"></stop>
+                <stop offset="100%" stop-color="#79c7a4"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="gauge-value">
+            <strong>${safePercent}%</strong>
+            <span class="subtle">${label}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCharts(products, issues, tasks, confidence) {
+      const issueRows = countBy(issues, (issue) => (issue.issue_type || "UNKNOWN").replaceAll("_", " "));
+      const taskRows = countBy(tasks, (task) => (task.task_type || "UNKNOWN").replaceAll("_", " "));
+      const hotspotRows = countBy(issues, (issue) => issue.shelf_level || "Unknown shelf");
+      const impactedRows = countBy(
+        products.filter((product) => (product.condition || "HEALTHY") !== "HEALTHY" || issues.some((issue) => issue.product_name === product.product_name)),
+        (product) => product.product_name,
+      );
+      const gapRows = sumBy(issues, (issue) => issue.issue_type?.replaceAll("_", " "), (issue) => issue.gap_units || 0).slice(0, 6);
+
+      renderGaugeChart(confidenceGauge, "model confidence", (confidence || 0) * 100);
+      renderBarChart(productChart, impactedRows, "", "Only impacted products will be visualized here.");
+      renderBarChart(issueChart, issueRows, "issue", "Issue-type chart appears here after a scan.");
+      renderBarChart(taskChart, taskRows, "task", "Task-type chart appears here after a scan.");
+      renderBarChart(hotspotChart, hotspotRows, "hotspot", "Shelf hotspot chart appears here after a scan.");
+      renderBarChart(gapChart, gapRows, "issue", "Gap load appears here when the report includes missing units.");
+    }
+
+    function clearCharts() {
+      confidenceGauge.innerHTML = emptyChartState("Confidence gauge appears here after a scan.");
+      productChart.innerHTML = emptyChartState("Only impacted products will be visualized here.");
+      issueChart.innerHTML = emptyChartState("Issue-type chart appears here after a scan.");
+      taskChart.innerHTML = emptyChartState("Task-type chart appears here after a scan.");
+      hotspotChart.innerHTML = emptyChartState("Shelf hotspot chart appears here after a scan.");
+      gapChart.innerHTML = emptyChartState("Gap load appears here when missing units are detected.");
+    }
+
+    clearCharts();
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      const formData = new FormData(form);
+      setBusyState(true);
       errorBox.style.display = "none";
       providerPill.textContent = "Analyzing";
-      overview.textContent = "Running shelf audit...";
+      overview.textContent = "Running shelf analysis and building the action report...";
       rawJson.textContent = "Loading...";
       metrics.innerHTML = "";
-      productsList.innerHTML = emptyState("Analyzing image...");
+      if (productsList) {
+        productsList.innerHTML = emptyState("Collecting impacted products...");
+      }
       issuesList.innerHTML = emptyState("Analyzing image...");
       tasksList.innerHTML = emptyState("Generating tasks...");
       instructionBox.textContent = "Preparing instruction...";
+      clearCharts();
 
-      const formData = new FormData(form);
 
       try {
-        const response = await fetch("/audit-shelf", {
-          method: "POST",
-          body: formData,
-        });
-
+        const response = await fetch("/audit-shelf", { method: "POST", body: formData });
         const text = await response.text();
         let data;
 
@@ -498,9 +1076,10 @@
         providerPill.textContent = data.provider;
         overview.textContent = data.overview;
         renderMetrics(data.summary, data.confidence, data.location);
-        renderProducts(data.detected_products || []);
+        renderProducts(data.detected_products || [], data.issues || []);
         renderIssues(data.issues || []);
         renderTasks(data.tasks || []);
+        renderCharts(data.detected_products || [], data.issues || [], data.tasks || [], data.confidence || 0);
         instructionBox.textContent = data.instruction || "No instruction returned.";
         rawJson.textContent = JSON.stringify(data, null, 2);
       } catch (error) {
@@ -509,10 +1088,15 @@
         errorBox.style.display = "block";
         errorBox.textContent = error.message;
         rawJson.textContent = error.message;
-        productsList.innerHTML = emptyState("No product data due to request failure.");
+        if (productsList) {
+          productsList.innerHTML = emptyState("No impacted products due to request failure.");
+        }
         issuesList.innerHTML = emptyState("No issue data due to request failure.");
         tasksList.innerHTML = emptyState("No tasks generated due to request failure.");
         instructionBox.textContent = "No instruction available.";
+        clearCharts();
+      } finally {
+        setBusyState(false);
       }
     });
   </script>

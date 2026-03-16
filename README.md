@@ -8,9 +8,12 @@ It lets a user:
 - send it to Amazon Bedrock Nova 2 Lite
 - detect visible products and shelf issues
 - generate restock / rearrange / audit tasks
+- allocate those tasks to employees on shift from a local rota
 - return a text instruction for the store associate
 
 If Bedrock is not available, the app can still run in a local demo fallback mode.
+
+For hackathon submission guidance, see [HACKATHON_SUBMISSION_CHECKLIST.md](C:/CODEX/HACKATHON_SUBMISSION_CHECKLIST.md).
 
 ## What your friend needs
 
@@ -121,6 +124,7 @@ The app will return:
 - detected products
 - shelf issues
 - generated tasks
+- task assignees chosen from the active rota
 - a final instruction message
 
 ## Important endpoints
@@ -129,8 +133,29 @@ The app will return:
 - `GET /bedrock-status`
 - `GET /bedrock-debug`
 - `GET /inventory`
+- `GET /rota`
+- `GET /active-staff`
 - `GET /tasks`
 - `POST /audit-shelf`
+
+## Rota-based assignment
+
+The app uses [data/rota.json](C:/CODEX/data/rota.json) to decide who is on shift.
+
+Each employee has:
+
+- an `employee_id`
+- a role
+- task skills like `RESTOCK`, `REARRANGE`, or `AUDIT`
+- optional zone coverage
+- weekday shift windows
+
+When a task is created, the app:
+
+1. finds active staff for the current time
+2. filters by skill
+3. prefers zone matches
+4. assigns the task to one active employee
 
 ## Troubleshooting
 

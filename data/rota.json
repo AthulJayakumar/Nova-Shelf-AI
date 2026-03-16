@@ -1,0 +1,61 @@
+﻿{
+  "employees": [
+    {
+      "employee_id": "EMP-001",
+      "name": "Sophie Carter",
+      "role": "Store Assistant",
+      "skills": ["RESTOCK", "REARRANGE"],
+      "zones": ["Unknown aisle", "Aisle 2 - Drinks Bay", "Household Aisle"],
+      "shifts": [
+        {"day": "MON", "start": "08:00", "end": "18:00"},
+        {"day": "TUE", "start": "08:00", "end": "18:00"},
+        {"day": "WED", "start": "08:00", "end": "18:00"},
+        {"day": "THU", "start": "08:00", "end": "18:00"},
+        {"day": "FRI", "start": "08:00", "end": "18:00"}
+      ]
+    },
+    {
+      "employee_id": "EMP-002",
+      "name": "Daniel Hughes",
+      "role": "Shift Lead",
+      "skills": ["AUDIT", "REARRANGE", "ALL"],
+      "zones": ["Unknown aisle", "Aisle 2 - Drinks Bay", "Household Aisle", "Grocery Aisle"],
+      "shifts": [
+        {"day": "MON", "start": "12:00", "end": "22:30"},
+        {"day": "TUE", "start": "12:00", "end": "22:30"},
+        {"day": "WED", "start": "12:00", "end": "22:30"},
+        {"day": "THU", "start": "12:00", "end": "22:30"},
+        {"day": "FRI", "start": "12:00", "end": "22:30"},
+        {"day": "SAT", "start": "10:00", "end": "22:30"},
+        {"day": "SUN", "start": "10:00", "end": "22:30"}
+      ]
+    },
+    {
+      "employee_id": "EMP-003",
+      "name": "Priya Nair",
+      "role": "Replenishment Assistant",
+      "skills": ["RESTOCK", "ALL"],
+      "zones": ["Unknown aisle", "Grocery Aisle", "Aisle 2 - Drinks Bay"],
+      "shifts": [
+        {"day": "SAT", "start": "08:00", "end": "20:00"},
+        {"day": "SUN", "start": "09:00", "end": "20:00"}
+      ]
+    },
+    {
+      "employee_id": "EMP-004",
+      "name": "Maya Thompson",
+      "role": "Duty Manager",
+      "skills": ["ALL"],
+      "zones": ["Unknown aisle", "Aisle 2 - Drinks Bay", "Household Aisle", "Grocery Aisle"],
+      "shifts": [
+        {"day": "MON", "start": "06:00", "end": "23:59"},
+        {"day": "TUE", "start": "06:00", "end": "23:59"},
+        {"day": "WED", "start": "06:00", "end": "23:59"},
+        {"day": "THU", "start": "06:00", "end": "23:59"},
+        {"day": "FRI", "start": "06:00", "end": "23:59"},
+        {"day": "SAT", "start": "06:00", "end": "23:59"},
+        {"day": "SUN", "start": "06:00", "end": "23:59"}
+      ]
+    }
+  ]
+}

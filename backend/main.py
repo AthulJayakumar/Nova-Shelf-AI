@@ -11,6 +11,7 @@ from database.db import init_db
 from database.models import ScanShelfResponse, ShelfAuditSummary
 from services.intelligence_hub import build_tasks
 from services.inventory_service import list_inventory
+from services.rota_service import get_active_employees, list_rota
 from services.task_engine import list_tasks
 from services.vision_service import analyze_shelf, get_latest_bedrock_debug, test_bedrock_connection
 from services.voice_service import generate_voice
@@ -18,8 +19,8 @@ from services.voice_service import generate_voice
 
 app = FastAPI(
     title="Retail Shelf Restock MVP",
-    version="0.5.0",
-    summary="Shelf audit, product detection, and task generation for any aisle image.",
+    version="0.6.0",
+    summary="Shelf audit, product detection, rota-aware task assignment, and task generation for any aisle image.",
 )
 
 FRONTEND_PATH = Path(__file__).resolve().parent.parent / "frontend" / "index.html"
@@ -73,6 +74,16 @@ def bedrock_debug() -> dict[str, str | bool | None]:
 @app.get("/inventory")
 def inventory() -> list[dict[str, int | str]]:
     return list_inventory()
+
+
+@app.get("/rota")
+def rota() -> list[dict]:
+    return [employee.model_dump() for employee in list_rota()]
+
+
+@app.get("/active-staff")
+def active_staff() -> list[dict]:
+    return [employee.model_dump() for employee in get_active_employees()]
 
 
 @app.get("/tasks")
